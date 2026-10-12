@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-
 # LiDAR Odometry from Scratch
 
 A step-by-step implementation of LiDAR odometry
