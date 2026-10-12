@@ -1,0 +1,36 @@
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+
+# Generated data and point clouds
+data/
+*.pcd
+*.ply
+*.las
+*.laz
+*.npy
+*.npz
+
+# Experiment outputs
+results/*
+!results/.gitkeep
+
+# C++ build artifacts
+build/
+cmake-build-*/
+*.o
+*.obj
+*.so
+*.dll
+*.exe
+*.a
+
+# IDE and operating system
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
