@@ -33,6 +33,3 @@ and LiDAR-Inertial Odometry (LIO).
 ## Status
 
 Initial repository setup.
-=======
-# Lidar-inertial-odometry
->>>>>>> origin/main
