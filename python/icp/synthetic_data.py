@@ -44,4 +44,4 @@ class GenerateSyntheticData:
         # get target point cloud by applying the transformation to the source point cloud
         target = (R @ source.T).T + t.T
         print("target point cloud generated")
-        return source, target, rotation_angle, t
+        return source, target, R, t
