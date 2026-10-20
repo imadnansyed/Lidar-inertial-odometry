@@ -1,20 +1,31 @@
 import numpy as np
 
 class GenerateSyntheticData:
-    def __init__(self, num_points: int= 10_000, seed : int = 42):
+    def __init__(self, num_points: int= 10_000, seed : int = 42, noise : float = 0.002):
         self.num_points = num_points
         self.seed = seed
+        self.noise = noise
 
     def get_source(self):
-        # Generate random 3D points
-        range = np.random.default_rng(self.seed)
-        points = range.uniform(-1, 1, (self.num_points, 3))
+        rng = np.random.default_rng(self.seed)
 
-        # make point geometrically asymmetric by scaling the x, y, z coordinates differently
-        points[:, 0] *= 3.0
-        points[:, 1] *= 1.5
-        points[:, 2] += 0.3 * points[:, 0]**2
-        print("Source generated : ",self.num_points, " total points")
+        # Floor: z = 0
+        floor = rng.uniform(-2, 2, (self.num_points, 3))
+        floor[:, 2] = 0
+
+        # Wall: x = 2
+        wall_x = rng.uniform(-2, 2, (self.num_points, 3))
+        wall_x[:, 0] = 2
+
+        # Wall: y = 2
+        wall_y = rng.uniform(-2, 2, (self.num_points, 3))
+        wall_y[:, 1] = 2
+
+        points = np.vstack((floor, wall_x, wall_y))
+
+        # Small measurement noise
+        points += rng.normal(0, self.noise, points.shape)
+
         return points
 
     def make_transform(self, rotation_angle: float, translation_vector: np.ndarray = np.array([0.5, -0.3, 0.2])):
