@@ -3,7 +3,7 @@ import open3d as o3d
 from pathlib import Path
 
 
-def load(path:str = r"E:\Workspace\PC\AI Engineer\cv\projects\VO and SLAM\data\000000.bin", plot:bool = False):
+def load(path:str = r"E:\Workspace\PC\AI Engineer\cv\projects\VO and SLAM\data\000000.bin"):
     
     scan = np.fromfile(path, dtype = np.float32)
 
@@ -20,11 +20,4 @@ def load(path:str = r"E:\Workspace\PC\AI Engineer\cv\projects\VO and SLAM\data\0
     print("XYZ minimum:", points.min(axis=0))
     print("XYZ maximum:", points.max(axis=0))
 
-    if plot: 
-    # # Visualize points
-
-        pcd = o3d.geometry.PointCloud()
-        pcd.points = o3d.utility.Vector3dVector(points)
-
-        o3d.visualization.draw_geometries([pcd])
     return points

@@ -27,7 +27,7 @@ def voxel_downsample(points, voxel_size=0.2):
 
 
 points = load()
-# downsampled, counts = down_sample(points, 1)
+# downsampled, counts = voxel_downsample(points, 1)
 
 # # Report results.
 # print("Original points:", len(points))
@@ -39,6 +39,8 @@ points = load()
 # print("Original shape:", points.shape)
 # print("Downsampled shape:", downsampled.shape)
 
+
+# Example with 0.1, 0.2, 0.3
 for size in [0.1, 0.2, 0.5]:
     downsampled = voxel_downsample(points, voxel_size=size)
     reduction = 100 * (1 - len(downsampled) / len(points))
