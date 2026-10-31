@@ -1,5 +1,5 @@
 import numpy as np
-from load_bin import load
+# from icp.loader.load_bin import load_bin
 
 def voxel_downsample(points, voxel_size=0.2):
     if voxel_size <= 0:
@@ -26,7 +26,8 @@ def voxel_downsample(points, voxel_size=0.2):
     return sums / counts[:, None]
 
 
-points = load()
+# points = load_bin()
+
 # downsampled, counts = voxel_downsample(points, 1)
 
 # # Report results.
@@ -40,13 +41,13 @@ points = load()
 # print("Downsampled shape:", downsampled.shape)
 
 
-# Example with 0.1, 0.2, 0.3
-for size in [0.1, 0.2, 0.5]:
-    downsampled = voxel_downsample(points, voxel_size=size)
-    reduction = 100 * (1 - len(downsampled) / len(points))
+# # Example with 0.1, 0.2, 0.3
+# for size in [0.1, 0.2, 0.5]:
+#     downsampled = voxel_downsample(points, voxel_size=size)
+#     reduction = 100 * (1 - len(downsampled) / len(points))
 
-    print(
-        f"Voxel: {size:.1f} m | "
-        f"Points: {len(downsampled)} | "
-        f"Reduction: {reduction:.2f}%"
-    )
+#     print(
+#         f"Voxel: {size:.1f} m | "
+#         f"Points: {len(downsampled)} | "
+#         f"Reduction: {reduction:.2f}%"
+#     )

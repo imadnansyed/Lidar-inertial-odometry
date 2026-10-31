@@ -1,51 +1,43 @@
-from synthetic_data import GenerateSyntheticData
+from pathlib import Path
+# from synthetic_data import GenerateSyntheticData
 from icp import ICP
 import numpy as np
-import time
+
 
 if __name__ == "__main__":
-    generator = GenerateSyntheticData(num_points=10_000, seed=42)
-    source, target, defined_R, defined_t = generator.generate()
 
-    # ICP Type 0
-    icp_0 = ICP(
-        type=0,
-        source_cloud=source,
-        target_cloud=target,
-        max_iterations=50,
-        R_gt=defined_R,
-        t_gt=defined_t.ravel(),
-        plot=False
-    )
+    # generator = GenerateSyntheticData(num_points=10_000, seed=42)
+    # source, target, defined_R, defined_t = generator.generate()
 
-    start = time.perf_counter()
-    R_0, t_0 = icp_0.run()
-    time_0 = time.perf_counter() - start
+    
 
+        # ICP Type 0
+        icp_0 = ICP(
+            type=1,
+            max_iterations=20,
+            max_distance_toleration=np.inf,
+            tolerance=1e-6,
+            plot=False
+        )
 
-    # ICP Type 1
-    icp_1 = ICP(
-        type=1,
-        source_cloud=source,
-        target_cloud=target,
-        max_iterations=50,
-        R_gt=defined_R,
-        t_gt=defined_t.ravel(),
-        plot=False
-    )
+        R_est, t_est, T_rel, poses = icp_0.run()
 
-    start = time.perf_counter()
-    R_1, t_1 = icp_1.run()
-    time_1 = time.perf_counter() - start
+        R_est = np.array(R_est)       # (N-1, 3, 3)
+        t_est = np.array(t_est)       # (N-1, 3)
+        T_rel = np.array(T_rel)       # (N-1, 4, 4)
+        poses = np.array(poses)       # (N, 4, 4)
+
+        np.savez_compressed(
+                                "results/estimated_odometry.npz",
+                                R_est=R_est,
+                                t_est=t_est,
+                                T_rel=T_rel,
+                                poses=poses
+                            )
+
+        print("Odometry results saved successfully!")
 
 
-    # Compare execution times
-    print(f"Point-to-point ICP (Type 0): {time_0:.3f} ms")
-    print(f"Point-to-plane ICP (Type 1):  {time_1:.3f} ms")
 
-    if time_0 < time_1:
-        print(f"Type 0 is {time_1 / time_0:.2f}x faster")
-    elif time_1 < time_0:
-        print(f"Type 1 is {time_0 / time_1:.2f}x faster")
-    else:
-        print("Both took approximately the same time")
+
+

@@ -260,6 +260,6 @@ class PointToPlane:
         print("Running point-to-plane ICP...")
         R_est, t_est, aligned, rmse, iterations = self.p_to_plane()
 
-        self.show_results(R_est, t_est, iterations, aligned, rmse, plot)
+        # self.show_results(R_est, t_est, iterations, aligned, rmse, plot)
 
         return R_est, t_est

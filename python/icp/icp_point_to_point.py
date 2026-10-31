@@ -12,7 +12,7 @@ class PointToPoint:
          e. max_distance_toleration : maximum distance to consider a correspondence valid
          f. tolerance : convergence criteria based on RMSE error change
          """
-    def __init__(self, source_cloud : np.ndarray, target_cloud : np.ndarray , R_gt : np.ndarray, t_gt : np.ndarray, max_iterations : int , max_distance_toleration, tolerance : float ):
+    def __init__(self, source_cloud : np.ndarray, target_cloud : np.ndarray , R_gt : np.ndarray, t_gt : np.ndarray, max_iterations : int , max_distance_toleration, tolerance : float, R_init : np.ndarray = None, t_init : np.ndarray = None):
         
         self.source_cloud = source_cloud
         self.target_cloud = target_cloud
@@ -21,6 +21,8 @@ class PointToPoint:
         self.tolerance = tolerance
         self.R_gt = R_gt
         self.t_gt = t_gt
+        self.R_init = R_init
+        self.t_init = t_init
 
     def find_correspondences(self, source, target):
         #  find correspondences between source and target point clouds using nearest neighbor search
@@ -66,9 +68,18 @@ class PointToPoint:
 
         # Keep working copy 
         aligned = self.source_cloud.copy()
-        R_total = np.eye(3)
-        t_total = np.zeros(3)
+        
+        R_total = (
+            np.eye(3) if self.R_init is None
+            else np.asarray(self.R_init, dtype=float).copy()
+        )
 
+        t_total = (
+            np.zeros(3) if self.t_init is None
+            else np.asarray(self.t_init, dtype=float).reshape(3).copy()
+        )
+
+        aligned = self.source_cloud @ R_total.T + t_total
         previous_error = np.inf
 
         for iteration in range(self.max_iterations):
@@ -151,6 +162,6 @@ class PointToPoint:
 
         print("Running point-to-point ICP...")
         R_est, t_est, aligned, rmse, iterations = self.p_to_point() 
-        self.show_results(R_est, t_est, iterations, aligned, rmse, plot)
+        # self.show_results(R_est, t_est, iterations, aligned, rmse, plot)
 
         return R_est, t_est
