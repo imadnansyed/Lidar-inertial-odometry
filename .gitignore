@@ -29,6 +29,9 @@ cmake-build-*/
 *.exe
 *.a
 
+# Libs if any
+third_party/
+
 # IDE and operating system
 .vscode/
 .idea/
