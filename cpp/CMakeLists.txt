@@ -37,38 +37,73 @@ endif()
 message(STATUS "Eigen3 found: ${EIGEN_INCLUDE_DIR}")
 
 # ==========================================
-# 4. LIO Executable
+# 4. Eigen Interface Target
+# ==========================================
+
+add_library(Eigen3::Eigen INTERFACE IMPORTED)
+
+set_target_properties(Eigen3::Eigen PROPERTIES
+    INTERFACE_INCLUDE_DIRECTORIES "${EIGEN_INCLUDE_DIR}"
+)
+
+# ==========================================
+# 5. LIO Executable
 # ==========================================
 
 add_executable(lio
     src/main.cpp
 )
 
-# ==========================================
-# 5. Include Directories
-# ==========================================
-
 target_include_directories(lio PRIVATE
     "${LIO_INCLUDE_DIR}"
-    "${EIGEN_INCLUDE_DIR}"
+)
+
+target_link_libraries(lio PRIVATE
+    Eigen3::Eigen
 )
 
 # ==========================================
-# 6. Compiler Warnings
+# 6. Testing
+# ==========================================
+
+enable_testing()
+
+add_executable(test_types
+    tests/test_types.cpp
+)
+
+target_include_directories(test_types PRIVATE
+    "${LIO_INCLUDE_DIR}"
+)
+
+target_link_libraries(test_types PRIVATE
+    Eigen3::Eigen
+)
+
+add_test(
+    NAME TestTypes
+    COMMAND test_types
+)
+
+# ==========================================
+# 7. Compiler Warnings
 # ==========================================
 
 if(MSVC)
     target_compile_options(lio PRIVATE /W4)
+    target_compile_options(test_types PRIVATE /W4)
 else()
     target_compile_options(lio PRIVATE
-        -Wall
-        -Wextra
-        -Wpedantic
+        -Wall -Wextra -Wpedantic
+    )
+
+    target_compile_options(test_types PRIVATE
+        -Wall -Wextra -Wpedantic
     )
 endif()
 
 # ==========================================
-# 7. Build Information
+# 8. Build Information
 # ==========================================
 
 message(STATUS "================================")
