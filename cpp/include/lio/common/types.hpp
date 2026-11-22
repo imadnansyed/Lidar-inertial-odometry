@@ -9,11 +9,7 @@
 
 namespace lio {
 
-
-
 // 1. LiDAR Point
-
-
 
 struct PointXYZI {
     Eigen::Vector3d xyz = Eigen::Vector3d::Zero();
@@ -21,20 +17,13 @@ struct PointXYZI {
 };
 
 
-
-
 // 2. Point Cloud
-
 
 
 using PointCloud = std::vector<PointXYZI>;
 
 
-
-
 // 3. LiDAR Scan
-
-
 
 struct LidarScan {
     int64_t timestamp_ns = 0;
@@ -43,11 +32,7 @@ struct LidarScan {
 };
 
 
-
-
 // 4. IMU Measurement
-
-
 
 struct ImuSample {
     int64_t timestamp_ns = 0;
@@ -60,21 +45,14 @@ struct ImuSample {
 };
 
 
-
-
 // 5. Synchronized Measurement Group
-
-
 struct MeasurementGroup {
     LidarScan lidar;
 
     std::vector<ImuSample> imu_measurements;
 };
 
-
 // 6. Estimated Pose Record
-
-
 struct PoseRecord {
     int64_t timestamp_ns = 0;
 

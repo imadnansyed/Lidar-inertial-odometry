@@ -1,6 +1,6 @@
 
 #include <iostream>
-#include "E:\Workspace\PC\AI Engineer\cv\projects\VO and SLAM\LIO Master 01\Lidar-inertial-odometry\cpp\include\lio\common\types.hpp"
+#include "../include/lio/common/types.hpp"
 
 int main() {
 
